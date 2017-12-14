@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Editable from './Editable.jsx';
 import Note from './Note.jsx';
 import LaneActions from '../actions/LaneActions';
 
-export  default ({notes, onValueClick, onEdit, onDelete}) => { return (<ul className="notes">
+const Notes =  ({notes, onValueClick, onEdit, onDelete}) => { return (<ul className="notes">
     {
         notes.map(
             note =>
@@ -23,3 +24,16 @@ export  default ({notes, onValueClick, onEdit, onDelete}) => { return (<ul class
         )
     }
     </ul>)};
+
+Notes.propTypes = {
+    notes : PropTypes.array,
+    onValueClick : PropTypes.func,
+    onEdit : PropTypes.func,
+    onDelete : PropTypes.func
+};
+Notes.defaultProps = {
+    notes : [],
+    onEdit : () => {}
+};
+
+export default Notes;

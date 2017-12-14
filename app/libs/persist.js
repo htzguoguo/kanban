@@ -9,7 +9,8 @@ export default function (alt, storage, storeName) {
     try {
         alt.bootstrap(storage.get(storeName));
     }catch(e) {
-        console.error('Failed to bootstrap data', e);
+       // console.error('Failed to bootstrap data', e);
+        let log;
     }
     finalStore.listen(() => {
         if (!storage.get('debug')) {

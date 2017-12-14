@@ -1,5 +1,30 @@
-body {
+/*body {
     background-color: cornsilk;
+}*/
+
+ .logo-header {
+    width: 120px;
+    height: 31px;
+    background: rgba(255,255,255,.2);
+    margin: 16px 24px 16px 0;
+    float: left;
+}
+.logo {
+    height: 32px;
+    background: rgba(255,255,255,.2);
+    margin: 16px;
+}
+
+ .trigger {
+    font-size: 18px;
+    line-height: 64px;
+    padding: 0 24px;
+    cursor: pointer;
+    transition: color .3s;
+}
+
+ .trigger:hover {
+    color: #1890ff;
 }
 
 .lane {
@@ -38,8 +63,6 @@ body {
 }
 .add-lane, .lane-add-note, button {
     cursor: pointer;
-    background-color: #fdfdfd;
-    border: 1px solid #ccc;
 }
 .lane-delete button {
     padding: 0px;

@@ -1,5 +1,18 @@
-body {
+/*body {
     background-color: cornsilk;
+}*/
+
+/* .logo {
+    width: 120px;
+    height: 31px;
+    background: rgba(255,255,255,.2);
+    margin: 16px 24px 16px 0;
+    float: left;
+}*/
+.logo {
+    height: 32px;
+    background: rgba(255,255,255,.2);
+    margin: 16px;
 }
 
 .lane {
@@ -38,8 +51,6 @@ body {
 }
 .add-lane, .lane-add-note, button {
     cursor: pointer;
-    background-color: #fdfdfd;
-    border: 1px solid #ccc;
 }
 .lane-delete button {
     padding: 0px;

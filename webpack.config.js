@@ -4,28 +4,35 @@
 
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const NpmInstallPlugin = require('npm-install-webpack-plugin');
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+/*const NpmInstallPlugin = require('npm-install-webpack-plugin');
+const path = require('path');*/
 
-const pkg = require('./package.json');
+/*const CleanPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const stylelint = require('stylelint');*/
+
+const common = require('./config/webpack.common');
+const development = require('./config/webpack.developement');
+const production = require('./config/webpack.production');
+const test = require('./config/webpack.test');
+
+/*const pkg = require('./package.json');*/
 const TARGET = process.env.npm_lifecycle_event;
 
-const PATHS = {
+/*const PATHS = {
     app : path.join(__dirname, 'app'),
     build : path.join(__dirname, 'build'),
-    style : path.join(__dirname, 'app/main.css')
-};
+    style : path.join(__dirname, 'app/main.css'),
+    test : path.join(__dirname, 'tests')
+};*/
 process.env.BABEL_ENV = TARGET;
-const common = {
+/*const common = {
     entry : {
         app : PATHS.app + '/index.jsx',
         style : PATHS.style
     },
     resolve: {
-        extensions: [ '.js', '.jsx']
+        extensions: ['.js', '.jsx']
     },
     output : {
         path : PATHS.build,
@@ -33,23 +40,29 @@ const common = {
         chunkFilename : '[hash].js'
     },
     module : {
-        loaders : [
-           /* {
-                test: /\.css$/,
-                loaders: ['style-loader', 'css-loader'],
-                // Include accepts either a path or an array of paths.
+        rules : [
+            {
+                test: /\.(js|jsx)$/,
+                loaders: ['eslint-loader'],
+                enforce: 'pre',
                 include: PATHS.app
-            },*/
+            },
+            {
+                test: /\.css$/,
+                loader: 'postcss-loader',
+                enforce: 'pre',
+                include: PATHS.app,
+                options: {
+                    plugins: () => ([
+                        require('stylelint')({
+                            ignoreFiles: 'node_modules/!**!/!*.css',
+                        }),
+                    ]),
+                }
+            },
             {
                 test: /\.jsx?$/,
                 loader : 'babel-loader',
-               /* query : {
-                    cacheDirectory : true,
-                    presets : [
-                        'react',
-                        'es2015'
-                    ]
-                },*/
                 include: PATHS.app
             }
         ]
@@ -62,13 +75,19 @@ const common = {
             inject: false
         })
     ]
-};
+};*/
 if (TARGET === 'start' || !TARGET) {
-    module.exports = merge(common, {
+    module.exports = merge(common, development);
+
+   /* module.exports = merge(common, {
+        entry : {
+            style : PATHS.style
+        },
         devtool : 'eval-source-map',
         devServer : {
-           /* contentBase : PATHS.build,*/
+           /!* contentBase : PATHS.build,*!/
             historyApiFallback : true,
+
             hot : true,
             inline : true,
             progress : true,
@@ -77,7 +96,7 @@ if (TARGET === 'start' || !TARGET) {
             port : process.env.PORT
         },
         module : {
-            loaders : [
+            rules : [
                 // Define development specific CSS setup
                 {
                     test: /\.css$/,
@@ -90,11 +109,11 @@ if (TARGET === 'start' || !TARGET) {
             new webpack.HotModuleReplacementPlugin(),
             new NpmInstallPlugin({save : true})
         ]
-    });
+    });*/
 }
-console.log('TARGET', TARGET);
 if (TARGET === 'build' || TARGET === 'stats') {
-    module.exports = merge(common, {
+    module.exports = merge(common, production);
+   /* module.exports = merge(common, {
         // Define vendor entry point needed for splitting
         entry: {
             vendor: Object.keys(pkg.dependencies).filter(function(v) {
@@ -102,10 +121,11 @@ if (TARGET === 'build' || TARGET === 'stats') {
             // due to the way the package has been designed
             // (no package.json main).
                 return v !== 'alt-utils';
-            })
+            }),
+            style : PATHS.style
         },
         module : {
-            loaders : [
+            rules : [
                 // Extract CSS during build
                 {
                     test: /\.css$/,
@@ -143,5 +163,32 @@ if (TARGET === 'build' || TARGET === 'stats') {
                 comments : false
             })
         ]
-    });
+    });*/
+}
+if (TARGET === 'test' || TARGET === 'tdd') {
+    module.exports = merge(common, test);
+   /* module.exports = merge(common, {
+
+        devtool: 'inline-source-map',
+        module: {
+            rules: [
+                {
+                    test: /\.(js|jsx)$/,
+                    loaders: ['isparta-instrumenter-loader'],
+                    enforce: 'pre',
+                    include: PATHS.app
+                },
+                {
+                    test: /\.css$/,
+                    loaders: ['style-loader', 'css-loader'],
+                    include: PATHS.app
+                },
+                {
+                    test: /\.(js|jsx)$/,
+                    loaders: ['babel-loader'],
+                    include: PATHS.test
+                }
+            ]
+        }
+    });*/
 }

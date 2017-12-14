@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Notes from './Notes.jsx';
 import NoteActions from '../actions/NoteActions';
 import NoteStore from '../stores/NoteStore';
@@ -27,7 +28,7 @@ const noteTarget = {
         connectDropTarget : connect.dropTarget()
     }
 ))
-export default class Lane extends React.Component {
+class Lane extends React.Component {
     constructor(props) {
         super(props);
         this.state =  NoteStore.getState() ;
@@ -44,7 +45,7 @@ export default class Lane extends React.Component {
 
     storeChanged(state){
         this.setState(state);
-    };
+    }
     render() {
         const {connectDropTarget, lane, ...props} = this.props;
         const notes = NoteStore.getNoteByIds(lane.notes);
@@ -117,3 +118,19 @@ export default class Lane extends React.Component {
     };
 
 }
+
+Lane.propTypes = {
+    lane : PropTypes.shape({
+        id : PropTypes.string.isRequired,
+        editing : PropTypes.bool,
+        name : PropTypes.string,
+        notes : PropTypes.array
+    }).isRequired,
+    connectDropTarget: PropTypes.func
+};
+Lane.defaultProps = {
+    name : '',
+    notes : []
+};
+
+export default Lane;

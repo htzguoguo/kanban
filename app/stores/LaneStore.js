@@ -44,7 +44,7 @@ class LaneStore {
             }
             if (lane.id === laneId) {
                 if (lane.notes.includes(noteId)) {
-                    console.warn('Already attached note to lane', lane);
+                  //  console.warn('Already attached note to lane', lane);
                 }else{
                     lane.notes.push(noteId);
                 }

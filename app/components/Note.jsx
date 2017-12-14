@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {DragSource, DropTarget} from 'react-dnd';
 import ItemTypes from '../constants/itemTypes';
 
@@ -32,7 +33,7 @@ const noteTarget = {
         connectDragTarget : connect.dropTarget()
     }
 ))
-export default class Note extends React.Component {
+class Note extends React.Component {
     render() {
         const {connectDragSource, connectDragTarget, isDragging,
             id, onMove, editing,  ...props} = this.props;
@@ -49,5 +50,19 @@ export default class Note extends React.Component {
         );
     }
 }
+
+Note.propTypes = {
+    id: PropTypes.string.isRequired,
+    editing : PropTypes.bool,
+    isDragging : PropTypes.bool,
+    onMove : PropTypes.func,
+    connectDragSource : PropTypes.func,
+    connectDragTarget : PropTypes.func
+};
+Note.defaultProps = {
+    onMove : () => {},
+    id : ''
+};
+export default Note;
 
 

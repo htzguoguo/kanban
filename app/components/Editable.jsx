@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default class Editable extends React.Component {
+class Editable extends React.Component {
     render () {
         const {value, onEdit, onValueClick, editing, onDelete, ...props} = this.props;
         return (
@@ -32,10 +33,7 @@ export default class Editable extends React.Component {
             onClick={this.props.onDelete}>x</button>);
     };
     finishEdit = (e) => {
-        const value = e.target.value;
-        if (this.props.onEdit) {
-            this.props.onEdit(value);
-        }
+        this.props.onEdit(e.target.value);
     };
     checkEnter = (e) => {
         if (e.key === 'Enter') {
@@ -43,3 +41,20 @@ export default class Editable extends React.Component {
         }
     };
 }
+
+Editable.propTypes = {
+    value : PropTypes.string,
+    editing : PropTypes.bool,
+    onEdit : PropTypes.func.isRequired,
+    onValueClick : PropTypes.func.isRequired,
+    onDelete : PropTypes.func
+};
+Editable.defaultProps = {
+    value : '',
+    editing : false,
+    onEdit : () => {}
+};
+
+
+
+export default Editable;
